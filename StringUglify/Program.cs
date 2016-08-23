@@ -19,7 +19,7 @@ namespace StringUglify
             json = json.Substring(start);
             json = json.Trim(';');
 
-            var result = prefix + Process(json) + ";";
+            var result = prefix + ProcessJson(json) + ";";
             File.WriteAllText("result.js", result);
 
             Console.WriteLine("Done!");
@@ -36,7 +36,7 @@ namespace StringUglify
             "STRINGS.NEWMEETING.timeMask"
         };
 
-        static string Process(string json)
+        static string ProcessJson(string json)
         {
             var dict = JsonConvert.DeserializeObject<ExpandoObject>(json);
             ProcessDict(dict, string.Empty);
@@ -84,7 +84,7 @@ namespace StringUglify
             {
                 var doc = new HtmlDocument();
                 doc.LoadHtml(input);
-                return RunSections(doc.DocumentNode.ChildNodes);
+                return RunHtmlNodes(doc.DocumentNode.ChildNodes);
             }
             else
             {
@@ -125,7 +125,7 @@ namespace StringUglify
             return builder.ToString();
         }
 
-        static string RunSections(IEnumerable<HtmlNode> nodes)
+        static string RunHtmlNodes(IEnumerable<HtmlNode> nodes)
         {
             var builder = new StringBuilder();
 
@@ -146,7 +146,7 @@ namespace StringUglify
                 {
                     if (node.ChildNodes.Any())
                     {
-                        var text = RunSections(node.ChildNodes);
+                        var text = RunHtmlNodes(node.ChildNodes);
                         var textNode = HtmlNode.CreateNode(text);
                         node.RemoveAllChildren();
                         node.AppendChild(textNode);
