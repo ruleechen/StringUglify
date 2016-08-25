@@ -104,7 +104,14 @@ namespace StringUglify
                 var idx = from.IndexOf(chr);
                 if (idx > -1)
                 {
-                    builder.Append(tooo[idx]);
+                    if (chr == 's' && i > 0 && input[i - 1] == '%')
+                    {
+                        builder.Append(chr);
+                    }
+                    else
+                    {
+                        builder.Append(tooo[idx]);
+                    }
                 }
                 else
                 {
@@ -171,7 +178,7 @@ namespace StringUglify
                     QuoteName = false,
                     QuoteChar = '\'',
                     Formatting = Formatting.Indented,
-                    Indentation = 2
+                    Indentation = 4
                 })
                 {
                     new JsonSerializer().Serialize(writer, obj);
